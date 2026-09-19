@@ -3,8 +3,8 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Riot Burger Co. — Good food. Bad attitude.',
-  description: 'Smash burgers, hot chicken, and a little bit of chaos. Riot Burger Co. serves fast food made fresh in Brooklyn.',
+  title: 'Cravings — Good food. Bad attitude.',
+  description: 'Cravings serves smash burgers, hot chicken, and fresh comfort food in Bahria Orchard Lahore.',
   generator: 'v0.app',
   icons: {
     icon: [
