@@ -4,14 +4,14 @@ import { useMemo, useState } from 'react'
 import { ArrowRight, CalendarDays, Check, Clock3, MapPin, Menu, Minus, Phone, Plus, ShoppingBag, Star, X } from 'lucide-react'
 
 const menu = [
-  { category: 'Burgers', icon: '01', name: 'The Classic', price: 12.5, description: 'Double smashed beef, American cheese, pickles, crisp onion, house sauce.', image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=85' },
-  { category: 'Burgers', icon: '01', name: 'Firebird', price: 14, description: 'Crispy hot chicken, jalapeño slaw, honey heat, toasted brioche.', image: 'https://images.unsplash.com/photo-1606755962773-d324e0a13086?auto=format&fit=crop&w=900&q=85' },
-  { category: 'Pizza', icon: '02', name: 'Pepperoni Riot', price: 16, description: 'Charred crust, mozzarella, old-school pepperoni, chili oil.', image: 'https://images.unsplash.com/photo-1579751626657-72bc17010498?auto=format&fit=crop&w=900&q=85' },
-  { category: 'Nuggets & Chicken', icon: '03', name: 'Golden Tenders', price: 11, description: 'Buttermilk-brined chicken, crunchy coating, ranch dip.', image: 'https://images.unsplash.com/photo-1562967916-eb82221dfb92?auto=format&fit=crop&w=900&q=85' },
-  { category: 'Sides & Fries', icon: '04', name: 'Dirty Fries', price: 8.5, description: 'Skin-on fries, cheese sauce, scallions, smoky brisket bits.', image: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=900&q=85' },
-  { category: 'Sandwiches & Wraps', icon: '05', name: 'Steak & Melt', price: 13.5, description: 'Shaved steak, provolone, grilled onions, toasted hoagie roll.', image: 'https://images.unsplash.com/photo-1550507992-eb63ffee0847?auto=format&fit=crop&w=900&q=85' },
-  { category: 'Drinks & Shakes', icon: '06', name: 'Salted Caramel Shake', price: 7, description: 'Vanilla soft serve, salted caramel, whipped cream, crunch.', image: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=900&q=85' },
-  { category: 'Combos / Deals', icon: '07', name: 'The Full Send', price: 24, description: 'Classic burger, dirty fries, shake. Everything tastes better together.', image: 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=900&q=85' },
+  { category: 'Burgers', icon: '01', name: 'The Classic', price: 1700, description: 'Double smashed beef, American cheese, pickles, crisp onion, house sauce.', image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=85' },
+  { category: 'Burgers', icon: '01', name: 'Firebird', price: 1900, description: 'Crispy hot chicken, jalapeño slaw, honey heat, toasted brioche.', image: 'https://images.unsplash.com/photo-1606755962773-d324e0a13086?auto=format&fit=crop&w=900&q=85' },
+  { category: 'Pizza', icon: '02', name: 'Pepperoni Riot', price: 2200, description: 'Charred crust, mozzarella, old-school pepperoni, chili oil.', image: 'https://images.unsplash.com/photo-1579751626657-72bc17010498?auto=format&fit=crop&w=900&q=85' },
+  { category: 'Nuggets & Chicken', icon: '03', name: 'Golden Tenders', price: 1500, description: 'Buttermilk-brined chicken, crunchy coating, ranch dip.', image: 'https://images.unsplash.com/photo-1562967916-eb82221dfb92?auto=format&fit=crop&w=900&q=85' },
+  { category: 'Sides & Fries', icon: '04', name: 'Dirty Fries', price: 850, description: 'Skin-on fries, cheese sauce, scallions, smoky brisket bits.', image: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=900&q=85' },
+  { category: 'Sandwiches & Wraps', icon: '05', name: 'Steak & Melt', price: 1800, description: 'Shaved steak, provolone, grilled onions, toasted hoagie roll.', image: 'https://images.unsplash.com/photo-1550507992-eb63ffee0847?auto=format&fit=crop&w=900&q=85' },
+  { category: 'Drinks & Shakes', icon: '06', name: 'Salted Caramel Shake', price: 700, description: 'Vanilla soft serve, salted caramel, whipped cream, crunch.', image: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=900&q=85' },
+  { category: 'Combos / Deals', icon: '07', name: 'The Full Send', price: 3200, description: 'Classic burger, dirty fries, shake. Everything tastes better together.', image: 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=900&q=85' },
 ]
 
 const categories = ['All', ...Array.from(new Set(menu.map((item) => item.category)))]
