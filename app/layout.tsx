@@ -1,4 +1,5 @@
 import { Analytics } from '@vercel/analytics/next'
+import Script from 'next/script'
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
@@ -38,7 +39,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <script
+        <Script
           id="retell-widget"
           src="https://dashboard.retellai.com/retell-widget-v2.js"
           type="module"
@@ -47,6 +48,7 @@ export default function RootLayout({
           data-voice-agent-id="agent_fa27e6fcf7fc76b6bde6f63071"
           data-title="Cravings Voice Agent"
           data-fab-text="🎙️ Talk to us"
+          strategy="afterInteractive"
         />
       </head>
       <body className="antialiased">
