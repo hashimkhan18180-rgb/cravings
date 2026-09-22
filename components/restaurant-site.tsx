@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { ArrowRight, CalendarDays, Check, Clock3, MapPin, Menu, Minus, Mic, Phone, Plus, ShoppingBag, Star, X } from 'lucide-react'
+import { ArrowRight, CalendarDays, Clock3, MapPin, Menu, Minus, Mic, Phone, Plus, ShoppingBag, Star, X } from 'lucide-react'
 
 type MenuItem = { category: string; icon: string; name: string; price: number; description: string; image: string; pizza?: boolean }
 type CartItem = MenuItem & { quantity: number; size?: string }
@@ -34,7 +34,6 @@ export function RestaurantSite() {
   const [detailQuantity, setDetailQuantity] = useState(1)
   const [cartOpen, setCartOpen] = useState(false)
   const [checkoutOpen, setCheckoutOpen] = useState(false)
-  const [confirmation, setConfirmation] = useState<string | null>(null)
   const [menuOpen, setMenuOpen] = useState(false)
   const [voiceOpen, setVoiceOpen] = useState(false)
   const [reservationSent, setReservationSent] = useState(false)
@@ -49,7 +48,23 @@ export function RestaurantSite() {
     return existing ? current.map((entry) => `${entry.name}-${entry.size ?? 'regular'}` === key ? { ...entry, quantity: entry.quantity + quantity } : entry) : [...current, { ...item, quantity, size }]
   })
   const updateQuantity = (index: number, delta: number) => setCart((current) => current.flatMap((item, itemIndex) => itemIndex === index ? (item.quantity + delta > 0 ? [{ ...item, quantity: item.quantity + delta }] : []) : [item]))
-  const submitOrder = (event: React.FormEvent<HTMLFormElement>) => { event.preventDefault(); setConfirmation(`CRV-${Math.floor(1000 + Math.random() * 9000)}`); setCheckoutOpen(false); setCartOpen(false) }
+  const submitOrder = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const formData = new FormData(event.currentTarget)
+    const name = String(formData.get('name') ?? '')
+    const phone = String(formData.get('phone') ?? '')
+    const orderType = String(formData.get('orderType') ?? 'Delivery')
+    const address = String(formData.get('address') ?? '')
+    const notes = String(formData.get('notes') ?? '')
+    const items = cart.map((item) => `- ${item.quantity}x ${item.name}${item.size ? ` (${item.size})` : ''} — PKR ${item.price * item.quantity}`).join('\\n')
+    const addressLine = orderType === 'Delivery' ? `Address: ${address}\\n` : ''
+    const notesLine = notes.trim() ? `Notes: ${notes.trim()}` : 'Notes:'
+    const message = `New Order — Cravings\\nCustomer: ${name}\\nPhone: ${phone}\\nOrder type: ${orderType}\\n${addressLine}\\nItems:\\n${items}\\n\\nTotal: PKR ${total}\\n\\n${notesLine}`
+    const whatsappUrl = `https://wa.me/923217166976?text=${encodeURIComponent(message)}`
+    window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
+    setCheckoutOpen(false)
+    setCartOpen(false)
+  }
 
   return <div className="min-h-screen bg-[#f5f1e9] text-[#1e1f1c] selection:bg-[#ff5a36] selection:text-white">
     <header className="fixed inset-x-0 top-0 z-40 border-b border-white/10 bg-[#1e1f1c]/95 text-white backdrop-blur-md"><div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 lg:px-10"><a href="#home" className="flex items-center gap-3" aria-label="Cravings home"><span className="grid size-10 place-items-center rounded-full bg-[#ff5a36] text-lg font-black italic">R</span><span className="font-black uppercase tracking-[-0.08em] text-xl">CRAVINGS<span className="text-[#ff5a36]">.</span></span></a><nav className="hidden items-center gap-8 text-xs font-bold uppercase tracking-[0.16em] text-white/70 md:flex"><a href="#menu">Menu</a><a href="#story">Our story</a><a href="#visit">Visit us</a></nav><div className="flex items-center gap-2"><button onClick={() => setVoiceOpen(true)} className="rounded-full border border-[#ff5a36] px-3 py-2.5 text-xs font-black uppercase tracking-wider text-[#ffb627]" aria-label="Talk to us"><span className="hidden lg:inline">Talk to us</span></button><button onClick={() => setCartOpen(true)} className="relative flex items-center gap-2 rounded-full bg-[#ffb627] px-4 py-2.5 text-xs font-black uppercase tracking-wider text-[#1e1f1c]"><ShoppingBag className="size-4" /><span className="hidden sm:inline">Order</span>{totalItems > 0 && <span className="grid size-5 place-items-center rounded-full bg-[#1e1f1c] text-[10px] text-white">{totalItems}</span>}</button><button className="p-2 md:hidden" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle navigation"><Menu /></button></div></div>{menuOpen && <nav className="flex flex-col gap-5 border-t border-white/10 bg-[#1e1f1c] px-5 py-5 text-xs font-bold uppercase tracking-[0.16em] md:hidden"><a href="#menu">Menu</a><a href="#story">Our story</a><a href="#visit">Visit us</a></nav>}</header>
@@ -63,7 +78,6 @@ export function RestaurantSite() {
 
     {checkoutOpen && <div className="fixed inset-0 z-50 grid place-items-center p-5"><button aria-label="Close checkout" className="absolute inset-0 bg-black/60" onClick={() => setCheckoutOpen(false)} /><section role="dialog" aria-modal="true" aria-labelledby="checkout-title" className="relative max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-[2rem] bg-[#f5f1e9] p-6 shadow-2xl md:p-8"><button onClick={() => setCheckoutOpen(false)} className="absolute right-5 top-5" aria-label="Close checkout"><X /></button><p className="text-xs font-black uppercase tracking-[0.2em] text-[#ff5a36]">Almost there</p><h2 id="checkout-title" className="mt-2 text-4xl font-black uppercase">Checkout</h2><form onSubmit={submitOrder} className="mt-7 grid gap-4"><label className="grid gap-2 text-xs font-black uppercase tracking-wider">Customer name<input required name="name" className="rounded-xl border-0 bg-white px-4 py-3 text-sm normal-case outline-none ring-[#ff5a36] focus:ring-2" placeholder="Your name" /></label><label className="grid gap-2 text-xs font-black uppercase tracking-wider">Phone number<input required name="phone" type="tel" className="rounded-xl border-0 bg-white px-4 py-3 text-sm normal-case outline-none focus:ring-2 focus:ring-[#ff5a36]" placeholder="03XX XXXXXXX" /></label><div className="grid gap-2 text-xs font-black uppercase tracking-wider">Order type<div className="grid grid-cols-3 gap-2">{['Dine in', 'Take out', 'Delivery'].map((type) => <label key={type} className="rounded-xl bg-white p-3 text-center text-xs"><input type="radio" name="orderType" value={type} defaultChecked={type === 'Delivery'} className="sr-only peer" /><span className="peer-checked:text-[#ff5a36]">{type}</span></label>)}</div></div><label className="grid gap-2 text-xs font-black uppercase tracking-wider">Delivery address<textarea name="address" required className="min-h-20 rounded-xl border-0 bg-white px-4 py-3 text-sm normal-case outline-none focus:ring-2 focus:ring-[#ff5a36]" placeholder="Address or table number" /></label><label className="grid gap-2 text-xs font-black uppercase tracking-wider">Order notes<textarea name="notes" className="min-h-16 rounded-xl border-0 bg-white px-4 py-3 text-sm normal-case outline-none focus:ring-2 focus:ring-[#ff5a36]" placeholder="Extra sauce? No onions?" /></label><div className="mt-2 rounded-2xl bg-[#1e1f1c] p-5 text-white"><div className="flex justify-between font-black uppercase"><span>Pay at counter / COD</span><span className="text-[#ffb627]">{money(total)}</span></div><button className="mt-5 w-full rounded-full bg-[#ffb627] px-5 py-4 text-sm font-black uppercase tracking-wider text-[#1e1f1c]">Place order</button></div></form></section></div>}
 
-    {confirmation && <div className="fixed inset-0 z-50 grid place-items-center p-5"><section role="dialog" aria-modal="true" aria-labelledby="confirmation-title" className="w-full max-w-md rounded-[2rem] bg-[#1e1f1c] p-8 text-center text-white shadow-2xl"><div className="mx-auto grid size-16 place-items-center rounded-full bg-[#ff5a36]"><Check /></div><p className="mt-6 text-xs font-black uppercase tracking-[0.2em] text-[#ffb627]">Order received</p><h2 id="confirmation-title" className="mt-2 text-4xl font-black uppercase">You&apos;re all set.</h2><p className="mt-4 text-white/60">Order <strong className="text-white">{confirmation}</strong> is confirmed. Estimated ready time: 25–35 minutes.</p><p className="mt-5 rounded-xl bg-white/5 p-3 text-sm text-white/70">Cash on delivery / pay at counter</p><button onClick={() => setConfirmation(null)} className="mt-6 w-full rounded-full bg-[#ffb627] px-5 py-4 text-sm font-black uppercase text-[#1e1f1c]">Back to menu</button></section></div>}
     {voiceOpen && <div className="fixed inset-0 z-50 grid place-items-center p-5"><button aria-label="Close voice agent" className="absolute inset-0 bg-black/60" onClick={() => setVoiceOpen(false)} /><section role="dialog" aria-modal="true" className="relative w-full max-w-md rounded-[2rem] bg-[#1e1f1c] p-8 text-white"><button onClick={() => setVoiceOpen(false)} className="absolute right-5 top-5" aria-label="Close voice agent"><X /></button><Mic className="mx-auto mt-4 size-12 text-[#ffb627]" /><h2 className="mt-6 text-center text-3xl font-black uppercase">Talk food.<br /><span className="text-[#ff5a36]">Skip typing.</span></h2><p className="mt-5 text-center text-sm text-white/60">Voice chat integration coming soon.</p></section></div>}
   </div>
 }
