@@ -154,6 +154,16 @@
   }
 }
 
+#retell-widget-root {
+  transition: opacity 160ms ease, visibility 160ms ease;
+}
+
+body:has(.fixed.inset-0.z-50) #retell-widget-root {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
