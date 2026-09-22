@@ -57,9 +57,9 @@ export function RestaurantSite() {
     const address = String(formData.get('address') ?? '')
     const notes = String(formData.get('notes') ?? '')
     const items = cart.map((item) => `- ${item.quantity}x ${item.name}${item.size ? ` (${item.size})` : ''} — PKR ${item.price * item.quantity}`).join('\\n')
-    const addressLine = orderType === 'Delivery' ? `Address: ${address}\\n` : ''
-    const notesLine = notes.trim() ? `Notes: ${notes.trim()}` : 'Notes:'
-    const message = `New Order — Cravings\\nCustomer: ${name}\\nPhone: ${phone}\\nOrder type: ${orderType}\\n${addressLine}\\nItems:\\n${items}\\n\\nTotal: PKR ${total}\\n\\n${notesLine}`
+    const addressLine = orderType === 'Delivery' ? `*Address:* ${address}\n` : ''
+    const notesLine = notes.trim() ? `*Notes:* ${notes.trim()}` : '*Notes:*'
+    const message = `*New Order — Cravings*\n*Customer:* ${name}\n*Phone:* ${phone}\n*Order type:* ${orderType}\n${addressLine}\n*Items:*\n${items}\n\n*Total: PKR ${total}*\n\n${notesLine}`
     const whatsappUrl = `https://wa.me/923217166976?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
     setCheckoutOpen(false)
