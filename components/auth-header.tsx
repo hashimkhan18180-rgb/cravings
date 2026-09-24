@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { UserRound } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import type { User } from '@supabase/supabase-js'
 import { supabase } from '@/lib/supabase'
@@ -19,9 +20,9 @@ export function AuthHeader() {
   }
 
   if (!user) {
-    return <><Link href="/sign-in" className="rounded-full border border-white/20 px-3 py-2.5 text-xs font-black uppercase tracking-wider text-white/80 hover:border-[#ffb627] hover:text-[#ffb627]">Sign in</Link><Link href="/sign-up" className="hidden rounded-full border border-[#ff5a36] px-3 py-2.5 text-xs font-black uppercase tracking-wider text-[#ffb627] sm:inline-flex">Sign up</Link></>
+    return <Link href="/sign-in" aria-label="Sign in" title="Sign in" className="grid size-10 place-items-center rounded-full border border-white/20 text-white/80 transition hover:border-[#ffb627] hover:text-[#ffb627]"><UserRound className="size-4" /></Link>
   }
 
   const name = user.user_metadata?.full_name?.split(' ')[0] || 'Account'
-  return <div className="flex items-center gap-2"><span className="hidden max-w-24 truncate text-xs font-black uppercase tracking-wider text-[#ffb627] sm:inline">{name}</span><button onClick={signOut} className="rounded-full border border-white/20 px-3 py-2.5 text-xs font-black uppercase tracking-wider text-white/80 hover:border-[#ff5a36] hover:text-[#ff5a36]">Sign out</button></div>
+  return <button onClick={signOut} aria-label={`Sign out ${name}`} title={`Sign out ${name}`} className="grid size-10 place-items-center rounded-full border border-white/20 text-[#ffb627] transition hover:border-[#ff5a36] hover:text-[#ff5a36]"><UserRound className="size-4" /></button>
 }
