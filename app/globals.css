@@ -179,3 +179,100 @@ body:has(.fixed.inset-0.z-50) #retell-widget-root {
     scroll-behavior: smooth;
   }
 }
+
+/* iOS-inspired translucent surfaces and soft depth. */
+body {
+  background:
+    radial-gradient(circle at 12% 8%, rgba(255, 182, 39, 0.18), transparent 24rem),
+    radial-gradient(circle at 88% 18%, rgba(255, 90, 54, 0.12), transparent 28rem),
+    #f5f1e9;
+}
+
+header.fixed {
+  background: rgba(30, 31, 28, 0.72) !important;
+  border-color: rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.14);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+}
+
+header.fixed > div {
+  height: 4.25rem;
+}
+
+header.fixed a,
+header.fixed button,
+header.fixed nav {
+  transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease;
+}
+
+header.fixed button:hover,
+header.fixed a:hover {
+  transform: translateY(-1px);
+}
+
+main > section:not(#home):not(#story):not(#testimonials):not(#faq),
+footer {
+  position: relative;
+}
+
+#home {
+  background:
+    radial-gradient(circle at 78% 25%, rgba(255, 182, 39, 0.16), transparent 25rem),
+    #1e1f1c !important;
+}
+
+#home img {
+  border-color: rgba(255, 255, 255, 0.18) !important;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.28) !important;
+}
+
+#menu article,
+#faq > div > div > div,
+[role='dialog'] > section,
+#testimonials article {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 18px 45px rgba(23, 24, 21, 0.12), inset 0 1px rgba(255, 255, 255, 0.48);
+}
+
+#menu article {
+  background: rgba(255, 255, 255, 0.68) !important;
+  backdrop-filter: blur(18px) saturate(135%);
+  -webkit-backdrop-filter: blur(18px) saturate(135%);
+}
+
+#testimonials {
+  background:
+    radial-gradient(circle at 80% 10%, rgba(255, 182, 39, 0.14), transparent 24rem),
+    #1e1f1c !important;
+}
+
+#testimonials article {
+  background: rgba(255, 255, 255, 0.09) !important;
+  border-color: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+}
+
+#testimonials article + * {
+  opacity: 0.72;
+}
+
+#faq {
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255, 90, 54, 0.12), transparent 24rem),
+    #11120f !important;
+}
+
+#faq > div > div > div {
+  background: rgba(255, 255, 255, 0.07) !important;
+  border-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+@media (max-width: 640px) {
+  header.fixed > div {
+    height: 3.9rem;
+  }
+}
