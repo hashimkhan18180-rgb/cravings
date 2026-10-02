@@ -152,7 +152,7 @@ export default function PosPage() {
       <header className="border-b border-slate-200 bg-white">
         <div className="mx-auto flex max-w-[1500px] items-center justify-between px-6 py-5">
           <div className="flex items-center gap-3"><div className="grid size-10 place-items-center rounded-xl bg-slate-950 text-white"><Store /></div><div><p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Cravings</p><h1 className="text-xl font-semibold tracking-tight">Order operations</h1></div></div>
-          <div className="flex items-center gap-4"><div className="hidden items-center gap-2 text-sm text-slate-500 sm:flex"><Radio className="size-4 text-emerald-500" /> Live queue</div><button onClick={signOut} className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50"><LogOut className="size-4" /> Sign out</button></div>
+          <div className="flex items-center gap-3"><button onClick={() => router.push('/pos/menu')} className="rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50">Menu management</button><div className="hidden items-center gap-2 text-sm text-slate-500 sm:flex"><Radio className="size-4 text-emerald-500" /> Live queue</div><button onClick={signOut} className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50"><LogOut className="size-4" /> Sign out</button></div>
         </div>
       </header>
 
