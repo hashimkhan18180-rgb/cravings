@@ -33,6 +33,8 @@ export function RestaurantSite() {
   const [cart, setCart] = useState<CartItem[]>([])
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null)
   const [selectedSize, setSelectedSize] = useState<MenuSize>({ label: '', price: 0 })
+
+  const defaultSizeFor = (item: MenuItem): MenuSize => item.sizes.find((size) => size.label === 'Medium') ?? item.sizes[0] ?? { label: '', price: item.price }
   const [detailQuantity, setDetailQuantity] = useState(1)
   const [cartOpen, setCartOpen] = useState(false)
   const [checkoutOpen, setCheckoutOpen] = useState(false)
@@ -66,6 +68,15 @@ export function RestaurantSite() {
         return { id: item.id, category: categoryNames.get(item.category_id) ?? 'Menu', icon: item.id.slice(0, 2).toUpperCase(), name: item.name, price: displayPrice, description: item.description ?? '', image: item.image_url ?? fallbackImage, hasSizes: item.has_sizes, sizes: itemSizes }
       })
       setLiveMenu(nextMenu)
+      setSelectedItem((current) => {
+        if (!current) return current
+        const refreshedItem = nextMenu.find((item) => item.id === current.id)
+        if (!refreshedItem) return null
+        setSelectedSize((previous) => refreshedItem.hasSizes
+          ? refreshedItem.sizes.find((size) => size.label === previous.label) ?? defaultSizeFor(refreshedItem)
+          : defaultSizeFor(refreshedItem))
+        return refreshedItem
+      })
     }
     loadLiveMenu()
     const itemsChannel = supabase
@@ -87,7 +98,7 @@ export function RestaurantSite() {
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0)
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
 
-  const openDetails = (item: MenuItem) => { setSelectedItem(item); setSelectedSize(item.sizes.find((size) => size.label === 'Medium') ?? item.sizes[0] ?? { label: '', price: item.price }); setDetailQuantity(1) }
+  const openDetails = (item: MenuItem) => { setSelectedItem(item); setSelectedSize(defaultSizeFor(item)); setDetailQuantity(1) }
   const addToCart = (item: MenuItem, quantity = 1, size?: string) => setCart((current) => {
     const key = `${item.name}-${size ?? 'regular'}`
     const existing = current.find((entry) => `${entry.name}-${entry.size ?? 'regular'}` === key)
