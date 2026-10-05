@@ -68,8 +68,19 @@ export function RestaurantSite() {
       setLiveMenu(nextMenu)
     }
     loadLiveMenu()
-    const channel = supabase.channel('customer-menu').on('postgres_changes', { event: '*', schema: 'public', table: 'menu_items' }, loadLiveMenu).on('postgres_changes', { event: '*', schema: 'public', table: 'menu_item_sizes' }, loadLiveMenu).subscribe()
-    return () => { active = false; supabase.removeChannel(channel) }
+    const itemsChannel = supabase
+      .channel('customer-menu-items')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'menu_items' }, loadLiveMenu)
+      .subscribe()
+    const sizesChannel = supabase
+      .channel('customer-menu-item-sizes')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'menu_item_sizes' }, loadLiveMenu)
+      .subscribe()
+    return () => {
+      active = false
+      supabase.removeChannel(itemsChannel)
+      supabase.removeChannel(sizesChannel)
+    }
   }, [])
 
   const filtered = useMemo(() => activeCategory === 'All' ? liveMenu : liveMenu.filter((item) => item.category === activeCategory), [activeCategory, liveMenu])
