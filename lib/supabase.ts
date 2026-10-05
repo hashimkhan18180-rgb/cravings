@@ -11,11 +11,16 @@ const browserGlobal = globalThis as SupabaseGlobal
 
 // Keep one browser client across Fast Refresh and every component import. A second
 // client can compete for the same auth storage and invalidate the active session.
+const liveFetch: typeof fetch = (input, init) => fetch(input, { ...init, cache: 'no-store' })
+
 export const supabase = browserGlobal.__cravingsSupabase ?? createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
     detectSessionInUrl: true,
+  },
+  global: {
+    fetch: liveFetch,
   },
 })
 
