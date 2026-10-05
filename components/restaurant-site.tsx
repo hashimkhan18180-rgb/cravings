@@ -44,7 +44,7 @@ export function RestaurantSite() {
   const [openFaq, setOpenFaq] = useState<number | null>(0)
   const [activeTestimonial, setActiveTestimonial] = useState(0)
   const [liveMenu, setLiveMenu] = useState<MenuItem[]>([])
-  const liveCategories = ['All', ...Array.from(new Set(liveMenu.map((item) => item.category)))]
+  const [liveCategories, setLiveCategories] = useState<string[]>([])
 
   useEffect(() => {
     let active = true
@@ -67,6 +67,7 @@ export function RestaurantSite() {
         const displayPrice = item.has_sizes ? (itemSizes.length ? Math.min(...itemSizes.map((size) => size.price)) : 0) : Number(item.base_price ?? 0)
         return { id: item.id, category: categoryNames.get(item.category_id) ?? 'Menu', icon: item.id.slice(0, 2).toUpperCase(), name: item.name, price: displayPrice, description: item.description ?? '', image: item.image_url ?? fallbackImage, hasSizes: item.has_sizes, sizes: itemSizes }
       })
+      setLiveCategories(['All', ...(categoryRows ?? []).map((category: { id: string; name: string; sort_order: number | null }) => category.name)])
       setLiveMenu(nextMenu)
       setSelectedItem((current) => {
         if (!current) return current
@@ -87,10 +88,15 @@ export function RestaurantSite() {
       .channel('customer-menu-item-sizes')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'menu_item_sizes' }, loadLiveMenu)
       .subscribe()
+    const categoriesChannel = supabase
+      .channel('customer-menu-categories')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'menu_categories' }, loadLiveMenu)
+      .subscribe()
     return () => {
       active = false
       supabase.removeChannel(itemsChannel)
       supabase.removeChannel(sizesChannel)
+      supabase.removeChannel(categoriesChannel)
     }
   }, [])
 
